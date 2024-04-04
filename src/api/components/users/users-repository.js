@@ -33,6 +33,24 @@ async function createUser(name, email, password) {
 }
 
 /**
+ * Prevent duplicate email
+ * @param {string} email - Email
+ * @param {string} password - Hashed password
+ * @returns {boolean}
+ */
+async function preventDuplicateEmail(email, password) {
+  const findDuplicate = await User.find({ email: email }).exec();
+
+  if (!findDuplicate) {
+    // if duplicate not found
+    return false;
+  } else {
+    // if duplicate is found
+    return true;
+  }
+}
+
+/**
  * Update existing user
  * @param {string} id - User ID
  * @param {string} name - Name
