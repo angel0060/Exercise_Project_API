@@ -67,12 +67,9 @@ async function createUser(name, email, password) {
  * @param {string} password - Hashed password
  * @returns {boolean}
  */
-async function preventDuplicateEmail(email, password) {
+async function preventDuplicateEmail(email) {
   try {
-    const checkDuplicate = await usersRepository.preventDuplicateEmail(
-      email,
-      password
-    );
+    const checkDuplicate = await usersRepository.preventDuplicateEmail(email);
     if (checkDuplicate == false) {
       return false;
     } else if (checkDuplicate == true) {

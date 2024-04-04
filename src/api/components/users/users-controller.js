@@ -52,10 +52,7 @@ async function createUser(request, response, next) {
     const password = request.body.password;
 
     // check if email is already used
-    const checkDuplicate = await usersService.preventDuplicateEmail(
-      email,
-      password
-    );
+    const checkDuplicate = await usersService.preventDuplicateEmail(email);
     if (checkDuplicate == true) {
       throw errorResponder(
         errorTypes.EMAIL_ALREADY_TAKEN,
@@ -89,15 +86,23 @@ async function updateUser(request, response, next) {
     const name = request.body.name;
     const email = request.body.email;
 
-    const success = await usersService.updateUser(id, name, email);
-    if (!success) {
+    // check if email is already used
+    const checkDuplicate = await usersService.preventDuplicateEmail(email);
+    if (checkDuplicate == true) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to update user'
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Email already taken'
       );
+    } else if (checkDuplicate == false) {
+      const success = await usersService.updateUser(id, name, email);
+      if (!success) {
+        throw errorResponder(
+          errorTypes.UNPROCESSABLE_ENTITY,
+          'Failed to update user'
+        );
+      }
+      return response.status(200).json({ id });
     }
-
-    return response.status(200).json({ id });
   } catch (error) {
     return next(error);
   }
