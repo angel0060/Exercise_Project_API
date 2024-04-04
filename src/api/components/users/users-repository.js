@@ -86,4 +86,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  preventDuplicateEmail,
 };

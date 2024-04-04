@@ -62,6 +62,28 @@ async function createUser(name, email, password) {
 }
 
 /**
+ * Prevent duplicate email
+ * @param {string} email - Email
+ * @param {string} password - Hashed password
+ * @returns {boolean}
+ */
+async function preventDuplicateEmail(email, password) {
+  try {
+    const checkDuplicate = await usersRepository.preventDuplicateEmail(
+      email,
+      password
+    );
+    if (checkDuplicate == false) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
  * Update existing user
  * @param {string} id - User ID
  * @param {string} name - Name
@@ -113,4 +135,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  preventDuplicateEmail,
 };
