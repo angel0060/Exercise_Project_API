@@ -51,15 +51,26 @@ async function createUser(request, response, next) {
     const email = request.body.email;
     const password = request.body.password;
 
-    const success = await usersService.createUser(name, email, password);
-    if (!success) {
+    // check if email is already used
+    const checkDuplicate = await usersService.preventDuplicateEmail(
+      email,
+      password
+    );
+    if (checkDuplicate == true) {
       throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to create user'
+        errorTypes.EMAIL_ALREADY_TAKEN,
+        'Email already taken'
       );
+    } else if (checkDuplicate == false) {
+      const success = await usersService.createUser(name, email, password);
+      if (!success) {
+        throw errorResponder(
+          errorTypes.UNPROCESSABLE_ENTITY,
+          'Failed to create user'
+        );
+      }
+      return response.status(200).json({ name, email });
     }
-
-    return response.status(200).json({ name, email });
   } catch (error) {
     return next(error);
   }

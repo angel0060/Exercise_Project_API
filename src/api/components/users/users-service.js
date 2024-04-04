@@ -75,7 +75,7 @@ async function preventDuplicateEmail(email, password) {
     );
     if (checkDuplicate == false) {
       return false;
-    } else {
+    } else if (checkDuplicate == true) {
       return true;
     }
   } catch (err) {

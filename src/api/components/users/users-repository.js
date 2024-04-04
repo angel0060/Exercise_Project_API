@@ -41,7 +41,7 @@ async function createUser(name, email, password) {
 async function preventDuplicateEmail(email, password) {
   const findDuplicate = await User.find({ email: email }).exec();
 
-  if (!findDuplicate) {
+  if (findDuplicate.length === 0) {
     // if duplicate not found
     return false;
   } else {
