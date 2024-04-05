@@ -35,7 +35,6 @@ async function createUser(name, email, password) {
 /**
  * Prevent duplicate email
  * @param {string} email - Email
- * @param {string} password - Hashed password
  * @returns {boolean}
  */
 async function preventDuplicateEmail(email) {
