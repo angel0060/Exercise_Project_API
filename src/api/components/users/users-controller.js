@@ -50,7 +50,7 @@ async function createUser(request, response, next) {
     const name = request.body.name;
     const email = request.body.email;
     const password = request.body.password;
-    const confirm_password = request.body.password;
+    const confirm_password = request.body.confirm_password;
 
     // check if password and confirm_password sama
     if (password != confirm_password) {
