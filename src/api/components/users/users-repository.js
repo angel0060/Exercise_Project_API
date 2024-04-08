@@ -79,6 +79,25 @@ async function deleteUser(id) {
   return User.deleteOne({ _id: id });
 }
 
+/**
+ * Check old password
+ * @param {string} id - User ID
+ * @param {string} password - Password
+ * @returns {boolean}
+ */
+async function changePassword(id, password) {
+  return User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        password,
+      },
+    }
+  );
+}
+
 module.exports = {
   getUsers,
   getUser,
@@ -86,4 +105,5 @@ module.exports = {
   updateUser,
   deleteUser,
   preventDuplicateEmail,
+  changePassword,
 };
