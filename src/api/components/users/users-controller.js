@@ -167,20 +167,21 @@ async function changePassword(request, response, next) {
         errorTypes.INVALID_PASSWORD,
         'New Password and Confirm New Password is different'
       );
-    }
-    // check if old password sama dengan password yg di database
-    const checkOldPassword = await usersService.checkOldPassword(
-      id,
-      old_password,
-      new_password
-    );
-    if (!checkOldPassword) {
-      throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to change password'
+    } else {
+      // check if old password sama dengan password yg di database
+      const checkOldPassword = await usersService.checkOldPassword(
+        id,
+        old_password,
+        new_password
       );
+      if (!checkOldPassword) {
+        throw errorResponder(
+          errorTypes.UNPROCESSABLE_ENTITY,
+          'Failed to change password'
+        );
+      }
+      return response.status(200).json({ id, old_password, new_password });
     }
-    return response.status(200).json({ id, old_password, new_password });
   } catch (error) {
     return next(error);
   }
